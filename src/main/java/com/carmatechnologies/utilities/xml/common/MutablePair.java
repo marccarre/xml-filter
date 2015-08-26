@@ -14,8 +14,9 @@ public final class MutablePair<First, Second> implements Pair<First, Second> {
         return first;
     }
 
-    public void first(final First first) {
+    public MutablePair<First, Second> first(final First first) {
         this.first = first;
+        return this; // To allow chaining calls.
     }
 
     @Override
@@ -23,8 +24,9 @@ public final class MutablePair<First, Second> implements Pair<First, Second> {
         return second;
     }
 
-    public void second(final Second second) {
+    public MutablePair<First, Second> second(final Second second) {
         this.second = second;
+        return this; // To allow chaining calls.
     }
 
     /**

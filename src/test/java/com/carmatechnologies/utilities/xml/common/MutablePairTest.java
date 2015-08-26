@@ -31,6 +31,21 @@ public class MutablePairTest {
     }
 
     @Test
+    public void firstAndSecondShouldBeChainable() {
+        MutablePair<String, Integer> pair = MutablePair.of("a", 1);
+        assertThat(pair.first(), is("a"));
+        assertThat(pair.second(), is(1));
+
+        pair.first("b").second(2);
+        assertThat(pair.first(), is("b"));
+        assertThat(pair.second(), is(2));
+
+        pair.second(3).first("c");
+        assertThat(pair.first(), is("c"));
+        assertThat(pair.second(), is(3));
+    }
+
+    @Test
     public void withFirstShouldPartiallyInitializePairWithFirstElement() {
         Pair<String, Integer> pair = MutablePair.withFirst("a");
         assertThat(pair, is(not(nullValue())));
