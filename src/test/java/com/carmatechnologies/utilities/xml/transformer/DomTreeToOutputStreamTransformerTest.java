@@ -1,5 +1,6 @@
 package com.carmatechnologies.utilities.xml.transformer;
 
+import com.carmatechnologies.utilities.xml.common.MutablePair;
 import org.junit.Test;
 import org.w3c.dom.Node;
 
@@ -32,7 +33,7 @@ public class DomTreeToOutputStreamTransformerTest {
         Node domTree = parseDomTree(XML);
         OutputStream out = new ByteArrayOutputStream();
 
-        new DomTreeToOutputStreamTransformer(out).apply(domTree);
+        new DomTreeToOutputStreamTransformer().apply(MutablePair.of(domTree, out));
 
         assertThat(out.toString(), is("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" + XML));
     }
