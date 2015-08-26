@@ -2,6 +2,7 @@ package com.carmatechnologies.utilities.xml.predicate;
 
 import com.google.common.base.Predicate;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
@@ -17,7 +18,7 @@ public final class XPathPredicate extends AbstractXPathPredicate implements Pred
     }
 
     @Override
-    protected boolean condition(final String result) {
-        return !result.isEmpty();
+    protected boolean condition(final NodeList matchedNodes) {
+        return matchedNodes.getLength() != 0;
     }
 }

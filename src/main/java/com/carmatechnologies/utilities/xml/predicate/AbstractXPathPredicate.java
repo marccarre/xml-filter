@@ -2,7 +2,9 @@ package com.carmatechnologies.utilities.xml.predicate;
 
 import com.google.common.base.Predicate;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
@@ -29,12 +31,12 @@ public abstract class AbstractXPathPredicate implements Predicate<Node> {
     public boolean apply(final Node domTree) {
         checkNotNull(domTree, "Node must NOT be null.");
         try {
-            final String result = xpathExpression.evaluate(domTree);
-            return condition(result);
+            final NodeList matchedNodes = (NodeList) xpathExpression.evaluate(domTree, XPathConstants.NODESET);
+            return condition(matchedNodes);
         } catch (XPathExpressionException e) {
             throw new RuntimeException("Failed to evaluate XPath expression on DOM tree.", e);
         }
     }
 
-    protected abstract boolean condition(final String result);
+    protected abstract boolean condition(final NodeList matchedNodes);
 }
