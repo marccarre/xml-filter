@@ -78,6 +78,20 @@ public final class TestingUtilities {
         }
     }
 
+    /**
+     * Helper method to parse the provided {@code InputStream} as a DOM tree.
+     *
+     * @param inputStream {@code InputStream} to parse.
+     * @return DOM tree corresponding to the provided {@code InputStream}.
+     */
+    public static Document parseDomTree(final InputStream inputStream) {
+        try {
+            return newDocumentBuilder().parse(inputStream);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder();
     }
