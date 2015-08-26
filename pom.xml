@@ -48,6 +48,7 @@
         <maven-surefire-plugin-version>2.18.1</maven-surefire-plugin-version>
         <jacoco-maven-plugin-version>0.7.5.201505241946</jacoco-maven-plugin-version>
         <coveralls-maven-plugin-version>3.2.0</coveralls-maven-plugin-version>
+        <pitest-maven-version>1.1.6</pitest-maven-version>
         <nexus-staging-maven-plugin-version>1.6.6</nexus-staging-maven-plugin-version>
         <maven-source-plugin-version>2.4</maven-source-plugin-version>
         <maven-javadoc-plugin-version>2.10.3</maven-javadoc-plugin-version>
@@ -162,6 +163,20 @@
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
             </plugin>
+
+            <!-- Mutation Coverage -->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <configuration>
+                    <targetClasses>
+                        <param>com.carmatechnologies.utilities.xml*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>com.carmatechnologies.utilities.xml*</param>
+                    </targetTests>
+                </configuration>
+            </plugin>
         </plugins>
 
         <pluginManagement>
@@ -185,6 +200,11 @@
                     <groupId>org.eluder.coveralls</groupId>
                     <artifactId>coveralls-maven-plugin</artifactId>
                     <version>${coveralls-maven-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>${pitest-maven-version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
