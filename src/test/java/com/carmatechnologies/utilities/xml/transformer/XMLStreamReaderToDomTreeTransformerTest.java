@@ -1,6 +1,6 @@
 package com.carmatechnologies.utilities.xml.transformer;
 
-import com.carmatechnologies.utilities.xml.common.AaltoXMLInputFactory;
+import com.carmatechnologies.utilities.xml.common.XMLInputFactoryImpl;
 import org.junit.Test;
 import org.w3c.dom.Node;
 
@@ -20,7 +20,7 @@ public class XMLStreamReaderToDomTreeTransformerTest {
 
     @Test
     public void xmlStreamReaderToDomTreeTransformerShouldOnlyTransformCurrentElementAsDomTree() throws XMLStreamException, TransformerConfigurationException {
-        XMLStreamReader reader = AaltoXMLInputFactory.newInstance().createXMLStreamReader(streamFor("/books.xml"));
+        XMLStreamReader reader = XMLInputFactoryImpl.newInstance().createXMLStreamReader(streamFor("/books.xml"));
         moveToFirstElementNamed("book", reader);
 
         Node domTree = new XMLStreamReaderToDomTreeTransformer().apply(reader);

@@ -9,4 +9,4 @@ xml-stream-filter - a Java and command line utility to:
     - transform them according to the specified XPath transformation.
   - based on:
     -  the `javax.xml.*` API and 
-    - `aalto-xml` [known](https://github.com/eishay/jvm-serializers/wiki) to be a very fast implementation.
+    - `com.fasterxml.woodstox:woodstox-core` [known](https://github.com/eishay/jvm-serializers/wiki) to be a very fast implementation.

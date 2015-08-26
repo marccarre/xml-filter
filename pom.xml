@@ -41,7 +41,7 @@
 
         <commons-cli-version>1.3.1</commons-cli-version>
         <guava-version>18.0</guava-version>
-        <aalto-version>0.9.11</aalto-version>
+        <woodstox-version>5.0.1</woodstox-version>
         <junit-version>4.12</junit-version>
 
         <maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
@@ -101,9 +101,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml</groupId>
-            <artifactId>aalto-xml</artifactId>
-            <version>${aalto-version}</version>
+            <groupId>com.fasterxml.woodstox</groupId>
+            <artifactId>woodstox-core</artifactId>
+            <version>${woodstox-version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
