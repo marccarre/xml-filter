@@ -1,5 +1,6 @@
 package com.carmatechnologies.utilities.xml;
 
+import com.google.common.io.CharStreams;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -13,7 +14,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static com.google.common.base.Charsets.UTF_8;
 
@@ -26,10 +29,21 @@ public final class TestingUtilities {
      * Shorthand to get resource from classpath, by name, as stream.
      *
      * @param name Resource's name, e.g. "/books.xml"
-     * @return instance of {@InputStream} corresponding to the specified resource.
+     * @return Instance of {@InputStream} corresponding to the specified resource.
      */
     public static InputStream streamFor(final String name) {
         return TestingUtilities.class.getResourceAsStream(name);
+    }
+
+    /**
+     * Shorthand to convert {@code InputStream} to {@code String}.
+     *
+     * @param in Instance of {@InputStream} to convert into a {@code String}.
+     * @return {@code String} corresponding to the provided {@InputStream}.
+     * @throws IOException
+     */
+    public static String toUtf8String(final InputStream in) throws IOException {
+        return CharStreams.toString(new InputStreamReader(in, UTF_8));
     }
 
     /**

@@ -2,7 +2,7 @@
 
 xml-stream-filter - a Java and command line utility to:
 
-  - stream-process large XML files, and
+  - stream-process **large XML** and **GZipped XML** files, and
   - when specified elements are detected:
     - convert these to DOM trees
     - filter them according to the specified XPath predicate
