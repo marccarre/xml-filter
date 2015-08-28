@@ -2,6 +2,7 @@ package com.carmatechnologies.utilities.xml.common;
 
 import org.junit.Test;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +10,7 @@ import java.io.InputStream;
 import static com.carmatechnologies.utilities.xml.TestingUtilities.streamFor;
 import static com.carmatechnologies.utilities.xml.TestingUtilities.toUtf8String;
 import static com.google.common.base.Charsets.UTF_8;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -61,4 +63,12 @@ public class InputStreamsTest {
             throw new RuntimeException("mark/reset not supported");
         }
     }
+
+    @Test
+    public void bufferedShouldWrapTheProvidedInputStreamInBufferedInputStream() {
+        InputStream in = new ByteArrayInputStream(HELLO_WORLD.getBytes(UTF_8));
+        assertThat(in, is(not(instanceOf(BufferedInputStream.class))));
+        assertThat(InputStreams.buffered(in), is(instanceOf(BufferedInputStream.class)));
+    }
+
 }

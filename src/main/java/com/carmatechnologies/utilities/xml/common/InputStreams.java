@@ -14,6 +14,18 @@ public final class InputStreams {
     }
 
     /**
+     * Wraps the provided {@code InputStream} in a {@code BufferedInputStream} if not already done.
+     *
+     * @param in {@code InputStream} to buffer.
+     * @return {@code BufferedInputStream} corresponding to the provided {@code InputStream}.
+     */
+    public static InputStream buffered(final InputStream in) {
+        return (in instanceof BufferedInputStream)
+                ? in
+                : new BufferedInputStream(in);
+    }
+
+    /**
      * Check if the provided instance of {@code InputStream} is GZipped, and:
      * - if so, transparently decorates it with {@code GZIPInputStream},
      * - if not, returns the stream as is.

@@ -1,6 +1,8 @@
 package com.carmatechnologies.utilities.xml;
 
+import com.carmatechnologies.utilities.xml.common.InputStreams;
 import com.carmatechnologies.utilities.xml.common.MutablePair;
+import com.carmatechnologies.utilities.xml.common.OutputStreams;
 import com.carmatechnologies.utilities.xml.common.Pair;
 import com.carmatechnologies.utilities.xml.common.XMLInputFactoryImpl;
 import com.carmatechnologies.utilities.xml.transformer.XMLStreamReaderToDomTreeTransformer;
@@ -14,8 +16,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.TransformerConfigurationException;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -60,8 +60,8 @@ public final class XmlStreamFilter implements StreamFilter {
         checkNotNull(rawOutput, "OutputStream must NOT be null.");
 
         // Improve stream processing's performance, and automatically gunzip where required.
-        final InputStream in = new BufferedInputStream(autoGUnzip(rawInput));
-        final OutputStream out = new BufferedOutputStream(rawOutput);
+        final InputStream in = autoGUnzip(InputStreams.buffered(rawInput));
+        final OutputStream out = OutputStreams.buffered(rawOutput);
 
         final XMLStreamReader reader = xmlInputFactory.createXMLStreamReader(in, UTF_8.name());
         final MutablePair<Node, OutputStream> outputHolder = MutablePair.withSecond(out);
