@@ -6,6 +6,7 @@ import com.carmatechnologies.utilities.xml.common.XMLInputFactoryImpl;
 import com.carmatechnologies.utilities.xml.transformer.XMLStreamReaderToDomTreeTransformer;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.io.Closeables;
 import org.w3c.dom.Node;
 
 import javax.xml.stream.XMLInputFactory;
@@ -54,9 +55,13 @@ public final class XmlStreamFilter implements StreamFilter {
     }
 
     @Override
-    public void filter(final InputStream in, final OutputStream out) throws XMLStreamException {
-        checkNotNull(in, "InputStream must NOT be null.");
-        checkNotNull(out, "OutputStream must NOT be null.");
+    public void filter(InputStream rawInput, OutputStream rawOutput) throws XMLStreamException, IOException {
+        checkNotNull(rawInput, "InputStream must NOT be null.");
+        checkNotNull(rawOutput, "OutputStream must NOT be null.");
+
+        // Improve stream processing's performance, and automatically gunzip where required.
+        final InputStream in = new BufferedInputStream(autoGUnzip(rawInput));
+        final OutputStream out = new BufferedOutputStream(rawOutput);
 
         final XMLStreamReader reader = xmlInputFactory.createXMLStreamReader(in, UTF_8.name());
         final MutablePair<Node, OutputStream> outputHolder = MutablePair.withSecond(out);
@@ -70,14 +75,40 @@ public final class XmlStreamFilter implements StreamFilter {
                 }
             }
         }
+
+        closeQuietly(reader, out, in);
     }
+
 
     private boolean isStartOfTargetElement(final XMLStreamReader reader) throws XMLStreamException {
         return (reader.getEventType() == XMLEvent.START_ELEMENT) && elementLocalName.equals(reader.getLocalName());
     }
 
+    private static void closeQuietly(final XMLStreamReader reader, final OutputStream out, final InputStream in) {
+        closeQuietly(reader);
+        closeQuietly(out);
+        Closeables.closeQuietly(in);
+    }
+
+    private static void closeQuietly(final OutputStream out) {
+        try {
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            // Voluntarily swallowed: nothing else to do at the end of the processing.
+        }
+    }
+
+    private static void closeQuietly(final XMLStreamReader reader) {
+        try {
+            reader.close();
+        } catch (XMLStreamException e) {
+            // Voluntarily swallowed: nothing else to do at the end of the processing.
+        }
+    }
+
     public static void main(final String[] args) throws IOException, XMLStreamException {
         final StreamFilter streamFilter = new XmlStreamFilterCliFactory().newStreamFilter(args);
-        streamFilter.filter(new BufferedInputStream(autoGUnzip(System.in)), new BufferedOutputStream(System.out));
+        streamFilter.filter(System.in, System.out);
     }
 }

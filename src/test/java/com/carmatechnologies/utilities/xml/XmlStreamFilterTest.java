@@ -17,9 +17,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import static com.carmatechnologies.utilities.xml.TestingUtilities.streamFor;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -34,7 +34,7 @@ public class XmlStreamFilterTest {
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void filterShouldFilterBasedOnXPathQueryAndOutputFilteredElements() throws XPathExpressionException, TransformerConfigurationException, XMLStreamException, UnsupportedEncodingException {
+    public void filterShouldFilterBasedOnXPathQueryAndOutputFilteredElements() throws XPathExpressionException, TransformerConfigurationException, XMLStreamException, IOException {
         Predicate<Node> filter = new XPathPredicate("//book/tags/tag[text() = 'magician']");
         Function<Pair<Node, OutputStream>, Void> transformer = new DomTreeToOutputStreamTransformer();
         XmlStreamFilter streamFilter = new XmlStreamFilter("book", filter, transformer);
@@ -58,7 +58,7 @@ public class XmlStreamFilterTest {
     }
 
     @Test
-    public void filterShouldFilterBasedOnXPathQueryAndWhiteListSetAndOutputFilteredElementsAccordingToXPathTransformation() throws XPathExpressionException, TransformerConfigurationException, XMLStreamException {
+    public void filterShouldFilterBasedOnXPathQueryAndWhiteListSetAndOutputFilteredElementsAccordingToXPathTransformation() throws XPathExpressionException, TransformerConfigurationException, XMLStreamException, IOException {
         Predicate<Node> filter = new XPathSetPredicate("//book/tags/tag/text()", Sets.newHashSet("xml", "xquery"));
         Function<Pair<Node, OutputStream>, Void> transformer = new XPathToOutputStreamTransformer("//book/title/text()");
         XmlStreamFilter streamFilter = new XmlStreamFilter("book", filter, transformer);

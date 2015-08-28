@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -59,7 +60,7 @@ public class XmlStreamFilterCliFactoryTest {
     private final XmlStreamFilterCliFactory factory = new XmlStreamFilterCliFactory(stdOutWriter, stdErrWriter);
 
     @Test
-    public void simpleFilterUsingXPathToSelectPrintsSelectedXmlToStandardOutput() throws XMLStreamException {
+    public void simpleFilterUsingXPathToSelectPrintsSelectedXmlToStandardOutput() throws XMLStreamException, IOException {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag[text() = 'magician']"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(XmlStreamFilter.class)));
@@ -67,7 +68,6 @@ public class XmlStreamFilterCliFactoryTest {
         InputStream in = streamFor("/books.xml");
         filter.filter(in, stdOut);
 
-        flush();
         assertThat(stdOut.toString(), is("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
                 "<book category=\"CHILDREN\">" + NEW_LINE +
                 "        <title lang=\"en\">Harry Potter</title>" + NEW_LINE +
@@ -83,7 +83,7 @@ public class XmlStreamFilterCliFactoryTest {
     }
 
     @Test
-    public void simpleFilterUsingXPathToSelectPrintsSelectedXmlToStandardOutputWithIndentation() throws XMLStreamException {
+    public void simpleFilterUsingXPathToSelectPrintsSelectedXmlToStandardOutputWithIndentation() throws XMLStreamException, IOException {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag[text() = 'magician']", "-i"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(XmlStreamFilter.class)));
@@ -91,7 +91,6 @@ public class XmlStreamFilterCliFactoryTest {
         InputStream in = streamFor("/books_no_indentation.xml");
         filter.filter(in, stdOut);
 
-        flush();
         assertThat(stdOut.toString(), is("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" + NEW_LINE +
                 "<book category=\"CHILDREN\">" + NEW_LINE +
                 "    <title lang=\"en\">Harry Potter</title>" + NEW_LINE +
@@ -107,7 +106,7 @@ public class XmlStreamFilterCliFactoryTest {
     }
 
     @Test
-    public void advancedFilterUsingXPathToBothSelectAndTransformAndUsingWhiteListFromFilePrintsSelectedXmlToStandardOutput() throws XMLStreamException {
+    public void advancedFilterUsingXPathToBothSelectAndTransformAndUsingWhiteListFromFilePrintsSelectedXmlToStandardOutput() throws XMLStreamException, IOException {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag/text()", "-t", "//book/title/text()", "-f", Resources.getResource("white_list.txt").getFile()});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(XmlStreamFilter.class)));
@@ -115,7 +114,6 @@ public class XmlStreamFilterCliFactoryTest {
         InputStream in = streamFor("/books.xml");
         filter.filter(in, stdOut);
 
-        flush();
         assertThat(stdOut.toString(), is("XQuery Kick Start\nLearning XML\n"));
         assertThat(stdErr.toString(), is(""));
     }
