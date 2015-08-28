@@ -28,6 +28,8 @@ import static org.junit.Assert.assertThat;
 
 public class XmlStreamFilterTest {
 
+    private static final String NEW_LINE = System.getProperty("line.separator");
+
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
@@ -43,15 +45,15 @@ public class XmlStreamFilterTest {
         streamFilter.filter(in, out);
 
         assertThat(out.toString(), is("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
-                "<book category=\"CHILDREN\">\n" +
-                "        <title lang=\"en\">Harry Potter</title>\n" +
-                "        <author>J K. Rowling</author>\n" +
-                "        <year>2005</year>\n" +
-                "        <price>29.99</price>\n" +
-                "        <tags>\n" +
-                "            <tag>fantasy</tag>\n" +
-                "            <tag>magician</tag>\n" +
-                "        </tags>\n" +
+                "<book category=\"CHILDREN\">" + NEW_LINE +
+                "        <title lang=\"en\">Harry Potter</title>" + NEW_LINE +
+                "        <author>J K. Rowling</author>" + NEW_LINE +
+                "        <year>2005</year>" + NEW_LINE +
+                "        <price>29.99</price>" + NEW_LINE +
+                "        <tags>" + NEW_LINE +
+                "            <tag>fantasy</tag>" + NEW_LINE +
+                "            <tag>magician</tag>" + NEW_LINE +
+                "        </tags>" + NEW_LINE +
                 "    </book>"));
     }
 

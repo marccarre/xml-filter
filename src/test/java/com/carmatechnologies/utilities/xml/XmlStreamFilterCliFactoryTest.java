@@ -18,37 +18,39 @@ import static org.junit.Assert.assertThat;
 
 public class XmlStreamFilterCliFactoryTest {
 
-    private static final String USAGE = "usage: java com.carmatechnologies.utilities.xml.XmlStreamFilter [-e <arg>]\n" +
-            "       [-f <arg>] [-h] [-i] [-s <arg>] [-t <arg>] [-v]\n" +
-            " -e,--element <arg>     Local name of the XML element to detect in the\n" +
-            "                        input XML stream and, potentially, select.\n" +
-            "                        Example: \"book\".\n" +
-            " -f,--file <arg>        [Optional] Define white-list of patterns from\n" +
-            "                        file, one per line. XML elements will be selected\n" +
-            "                        if the value returned by the provided XPath query\n" +
-            "                        is in the white-list. Example: if file contains\n" +
-            "                        \"magician\\\\nxquery\\\\n\" and filter is:\n" +
-            "                        \"//book/tags/tag/text()\", then \"book\" elements\n" +
-            "                        with either a \"magician\" or \"xquery\" tag will be\n" +
-            "                        returned.\n" +
-            " -h,--help              Print this, i.e. a usage message briefly\n" +
-            "                        summarizing the command-line options, then exit.\n" +
-            " -i,--indent            [Optional] Indent returned XML elements, for\n" +
-            "                        potentially better readability. Default: keep the\n" +
-            "                        same formatting and indentation as in the input\n" +
-            "                        XML stream.\n" +
-            " -s,--select <arg>      XPath query used to select XML elements among the\n" +
-            "                        ones detected. Example: \"//book/tags/tag[text() =\n" +
-            "                        'magician']\" will select all \"book\" elements with\n" +
-            "                        \"magician\" as a \"tag\".\n" +
-            " -t,--transform <arg>   [Optional] XPath expression used to transform the\n" +
-            "                        selected XML elements. Example:\n" +
-            "                        \"//book/title/text()\". Default: the entire XML\n" +
-            "                        element will be returned.\n" +
-            " -v,--version           Print \"1.0\", i.e. the version number of\n" +
-            "                        com.carmatechnologies.utilities.xml.XmlStreamFilte\n" +
-            "                        r to the standard output stream. This version\n" +
-            "                        number should be included in all bug reports.\n";
+    private static final String NEW_LINE = System.getProperty("line.separator");
+
+    private static final String USAGE = "usage: java com.carmatechnologies.utilities.xml.XmlStreamFilter [-e <arg>]" + NEW_LINE +
+            "       [-f <arg>] [-h] [-i] [-s <arg>] [-t <arg>] [-v]" + NEW_LINE +
+            " -e,--element <arg>     Local name of the XML element to detect in the" + NEW_LINE +
+            "                        input XML stream and, potentially, select." + NEW_LINE +
+            "                        Example: \"book\"." + NEW_LINE +
+            " -f,--file <arg>        [Optional] Define white-list of patterns from" + NEW_LINE +
+            "                        file, one per line. XML elements will be selected" + NEW_LINE +
+            "                        if the value returned by the provided XPath query" + NEW_LINE +
+            "                        is in the white-list. Example: if file contains" + NEW_LINE +
+            "                        \"magician\\\\nxquery\\\\n\" and filter is:" + NEW_LINE +
+            "                        \"//book/tags/tag/text()\", then \"book\" elements" + NEW_LINE +
+            "                        with either a \"magician\" or \"xquery\" tag will be" + NEW_LINE +
+            "                        returned." + NEW_LINE +
+            " -h,--help              Print this, i.e. a usage message briefly" + NEW_LINE +
+            "                        summarizing the command-line options, then exit." + NEW_LINE +
+            " -i,--indent            [Optional] Indent returned XML elements, for" + NEW_LINE +
+            "                        potentially better readability. Default: keep the" + NEW_LINE +
+            "                        same formatting and indentation as in the input" + NEW_LINE +
+            "                        XML stream." + NEW_LINE +
+            " -s,--select <arg>      XPath query used to select XML elements among the" + NEW_LINE +
+            "                        ones detected. Example: \"//book/tags/tag[text() =" + NEW_LINE +
+            "                        'magician']\" will select all \"book\" elements with" + NEW_LINE +
+            "                        \"magician\" as a \"tag\"." + NEW_LINE +
+            " -t,--transform <arg>   [Optional] XPath expression used to transform the" + NEW_LINE +
+            "                        selected XML elements. Example:" + NEW_LINE +
+            "                        \"//book/title/text()\". Default: the entire XML" + NEW_LINE +
+            "                        element will be returned." + NEW_LINE +
+            " -v,--version           Print \"1.0\", i.e. the version number of" + NEW_LINE +
+            "                        com.carmatechnologies.utilities.xml.XmlStreamFilte" + NEW_LINE +
+            "                        r to the standard output stream. This version" + NEW_LINE +
+            "                        number should be included in all bug reports." + NEW_LINE;
 
     private final OutputStream stdOut = new ByteArrayOutputStream();
     private final OutputStream stdErr = new ByteArrayOutputStream();
@@ -67,15 +69,15 @@ public class XmlStreamFilterCliFactoryTest {
 
         flush();
         assertThat(stdOut.toString(), is("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
-                "<book category=\"CHILDREN\">\n" +
-                "        <title lang=\"en\">Harry Potter</title>\n" +
-                "        <author>J K. Rowling</author>\n" +
-                "        <year>2005</year>\n" +
-                "        <price>29.99</price>\n" +
-                "        <tags>\n" +
-                "            <tag>fantasy</tag>\n" +
-                "            <tag>magician</tag>\n" +
-                "        </tags>\n" +
+                "<book category=\"CHILDREN\">" + NEW_LINE +
+                "        <title lang=\"en\">Harry Potter</title>" + NEW_LINE +
+                "        <author>J K. Rowling</author>" + NEW_LINE +
+                "        <year>2005</year>" + NEW_LINE +
+                "        <price>29.99</price>" + NEW_LINE +
+                "        <tags>" + NEW_LINE +
+                "            <tag>fantasy</tag>" + NEW_LINE +
+                "            <tag>magician</tag>" + NEW_LINE +
+                "        </tags>" + NEW_LINE +
                 "    </book>"));
         assertThat(stdErr.toString(), is(""));
     }
@@ -90,17 +92,17 @@ public class XmlStreamFilterCliFactoryTest {
         filter.filter(in, stdOut);
 
         flush();
-        assertThat(stdOut.toString(), is("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
-                "<book category=\"CHILDREN\">\n" +
-                "    <title lang=\"en\">Harry Potter</title>\n" +
-                "    <author>J K. Rowling</author>\n" +
-                "    <year>2005</year>\n" +
-                "    <price>29.99</price>\n" +
-                "    <tags>\n" +
-                "        <tag>fantasy</tag>\n" +
-                "        <tag>magician</tag>\n" +
-                "    </tags>\n" +
-                "</book>\n"));
+        assertThat(stdOut.toString(), is("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" + NEW_LINE +
+                "<book category=\"CHILDREN\">" + NEW_LINE +
+                "    <title lang=\"en\">Harry Potter</title>" + NEW_LINE +
+                "    <author>J K. Rowling</author>" + NEW_LINE +
+                "    <year>2005</year>" + NEW_LINE +
+                "    <price>29.99</price>" + NEW_LINE +
+                "    <tags>" + NEW_LINE +
+                "        <tag>fantasy</tag>" + NEW_LINE +
+                "        <tag>magician</tag>" + NEW_LINE +
+                "    </tags>" + NEW_LINE +
+                "</book>" + NEW_LINE));
         assertThat(stdErr.toString(), is(""));
     }
 
@@ -144,7 +146,7 @@ public class XmlStreamFilterCliFactoryTest {
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
         flush();
-        assertThat(stdOut.toString(), is("1.0\n"));
+        assertThat(stdOut.toString(), is("1.0" + NEW_LINE));
         assertThat(stdErr.toString(), is(""));
     }
 
@@ -154,7 +156,7 @@ public class XmlStreamFilterCliFactoryTest {
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
         flush();
-        assertThat(stdOut.toString(), is("1.0\n"));
+        assertThat(stdOut.toString(), is("1.0" + NEW_LINE));
         assertThat(stdErr.toString(), is(""));
     }
 
@@ -165,7 +167,7 @@ public class XmlStreamFilterCliFactoryTest {
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
         flush();
         assertThat(stdOut.toString(), is(""));
-        assertThat(stdErr.toString(), is("Invalid command line arguments: please provide a value for argument \"element\".\n" + USAGE));
+        assertThat(stdErr.toString(), is("Invalid command line arguments: please provide a value for argument \"element\"." + NEW_LINE + USAGE));
     }
 
     @Test
@@ -175,7 +177,7 @@ public class XmlStreamFilterCliFactoryTest {
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
         flush();
         assertThat(stdOut.toString(), is(""));
-        assertThat(stdErr.toString(), is("Missing argument for option: e\n" + USAGE));
+        assertThat(stdErr.toString(), is("Missing argument for option: e" + NEW_LINE + USAGE));
     }
 
     @Test
@@ -185,7 +187,7 @@ public class XmlStreamFilterCliFactoryTest {
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
         flush();
         assertThat(stdOut.toString(), is(""));
-        assertThat(stdErr.toString(), is("Invalid command line arguments: please provide a value for argument \"select\".\n" + USAGE));
+        assertThat(stdErr.toString(), is("Invalid command line arguments: please provide a value for argument \"select\"." + NEW_LINE + USAGE));
     }
 
     @Test
@@ -196,7 +198,7 @@ public class XmlStreamFilterCliFactoryTest {
         flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"select\". Original error: \n" +
-                "javax.xml.transform.TransformerException: A location path was expected, but the following token was encountered:  ~~~clearly\n" + USAGE));
+                "javax.xml.transform.TransformerException: A location path was expected, but the following token was encountered:  ~~~clearly" + NEW_LINE + USAGE));
     }
 
     @Test
@@ -207,7 +209,7 @@ public class XmlStreamFilterCliFactoryTest {
         flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"select\". Original error: \n" +
-                "javax.xml.transform.TransformerException: A location path was expected, but the following token was encountered:  ~~~clearly\n" + USAGE));
+                "javax.xml.transform.TransformerException: A location path was expected, but the following token was encountered:  ~~~clearly" + NEW_LINE + USAGE));
     }
 
     @Test
@@ -218,7 +220,7 @@ public class XmlStreamFilterCliFactoryTest {
         flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"transform\". Original error: \n" +
-                "javax.xml.transform.TransformerException: A location path was expected, but the following token was encountered:  ~~~clearly\n" + USAGE));
+                "javax.xml.transform.TransformerException: A location path was expected, but the following token was encountered:  ~~~clearly" + NEW_LINE + USAGE));
     }
 
     @Test
@@ -229,7 +231,7 @@ public class XmlStreamFilterCliFactoryTest {
         flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Invalid command line arguments: Failed to read white-list of patterns from file: ~/non_existant_white_list.txt. Original error: \n" +
-                "~/non_existant_white_list.txt (No such file or directory)\n" + USAGE));
+                "~/non_existant_white_list.txt (No such file or directory)" + NEW_LINE + USAGE));
     }
 
     private void flush() {
