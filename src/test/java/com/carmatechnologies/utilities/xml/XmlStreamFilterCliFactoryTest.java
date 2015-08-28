@@ -106,6 +106,52 @@ public class XmlStreamFilterCliFactoryTest {
     }
 
     @Test
+    public void simpleFilterUsingXPathToSelectPrintsSelectedGZippedXmlToStandardOutput() throws XMLStreamException, IOException {
+        StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag[text() = 'magician']"});
+        assertThat(filter, is(not(nullValue())));
+        assertThat(filter, is(instanceOf(XmlStreamFilter.class)));
+
+        InputStream in = streamFor("/books.xml.gz");
+        filter.filter(in, stdOut);
+
+        assertThat(stdOut.toString(), is("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
+                "<book category=\"CHILDREN\">" + NEW_LINE +
+                "        <title lang=\"en\">Harry Potter</title>" + NEW_LINE +
+                "        <author>J K. Rowling</author>" + NEW_LINE +
+                "        <year>2005</year>" + NEW_LINE +
+                "        <price>29.99</price>" + NEW_LINE +
+                "        <tags>" + NEW_LINE +
+                "            <tag>fantasy</tag>" + NEW_LINE +
+                "            <tag>magician</tag>" + NEW_LINE +
+                "        </tags>" + NEW_LINE +
+                "    </book>"));
+        assertThat(stdErr.toString(), is(""));
+    }
+
+    @Test
+    public void simpleFilterUsingXPathToSelectPrintsSelectedGZippedXmlToStandardOutputWithIndentation() throws XMLStreamException, IOException {
+        StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag[text() = 'magician']", "-i"});
+        assertThat(filter, is(not(nullValue())));
+        assertThat(filter, is(instanceOf(XmlStreamFilter.class)));
+
+        InputStream in = streamFor("/books_no_indentation.xml.gz");
+        filter.filter(in, stdOut);
+
+        assertThat(stdOut.toString(), is("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" + NEW_LINE +
+                "<book category=\"CHILDREN\">" + NEW_LINE +
+                "    <title lang=\"en\">Harry Potter</title>" + NEW_LINE +
+                "    <author>J K. Rowling</author>" + NEW_LINE +
+                "    <year>2005</year>" + NEW_LINE +
+                "    <price>29.99</price>" + NEW_LINE +
+                "    <tags>" + NEW_LINE +
+                "        <tag>fantasy</tag>" + NEW_LINE +
+                "        <tag>magician</tag>" + NEW_LINE +
+                "    </tags>" + NEW_LINE +
+                "</book>" + NEW_LINE));
+        assertThat(stdErr.toString(), is(""));
+    }
+
+    @Test
     public void advancedFilterUsingXPathToBothSelectAndTransformAndUsingWhiteListFromFilePrintsSelectedXmlToStandardOutput() throws XMLStreamException, IOException {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag/text()", "-t", "//book/title/text()", "-f", Resources.getResource("white_list.txt").getFile()});
         assertThat(filter, is(not(nullValue())));
