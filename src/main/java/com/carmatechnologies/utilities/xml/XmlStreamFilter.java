@@ -54,22 +54,16 @@ public final class XmlStreamFilter implements StreamFilter {
     }
 
     @Override
-    public void filter(final InputStream in, final OutputStream out) {
+    public void filter(final InputStream in, final OutputStream out) throws XMLStreamException {
         checkNotNull(in, "InputStream must NOT be null.");
         checkNotNull(out, "OutputStream must NOT be null.");
-        try {
-            doFilter(in, out);
-        } catch (XMLStreamException e) {
-            throw new RuntimeException("Failed to filter the provided stream.", e);
-        }
-    }
 
-    private void doFilter(final InputStream in, final OutputStream out) throws XMLStreamException {
         final XMLStreamReader reader = xmlInputFactory.createXMLStreamReader(in, UTF_8.name());
         final MutablePair<Node, OutputStream> outputHolder = MutablePair.withSecond(out);
 
         while (reader.hasNext()) {
-            if (isTargetElement(reader)) {
+            reader.next();
+            while (isStartOfTargetElement(reader)) {
                 final Node domTree = domTreeTransformer.apply(reader);
                 if (filter.apply(domTree)) {
                     transformer.apply(outputHolder.first(domTree));
@@ -78,11 +72,11 @@ public final class XmlStreamFilter implements StreamFilter {
         }
     }
 
-    private boolean isTargetElement(final XMLStreamReader reader) throws XMLStreamException {
-        return (reader.next() == XMLEvent.START_ELEMENT) && elementLocalName.equals(reader.getLocalName());
+    private boolean isStartOfTargetElement(final XMLStreamReader reader) throws XMLStreamException {
+        return (reader.getEventType() == XMLEvent.START_ELEMENT) && elementLocalName.equals(reader.getLocalName());
     }
 
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException, XMLStreamException {
         final StreamFilter streamFilter = new XmlStreamFilterCliFactory().newStreamFilter(args);
         streamFilter.filter(new BufferedInputStream(autoGUnzip(System.in)), new BufferedOutputStream(System.out));
     }

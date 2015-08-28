@@ -1,9 +1,9 @@
 package com.carmatechnologies.utilities.xml;
 
 import com.google.common.io.Resources;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -57,7 +57,7 @@ public class XmlStreamFilterCliFactoryTest {
     private final XmlStreamFilterCliFactory factory = new XmlStreamFilterCliFactory(stdOutWriter, stdErrWriter);
 
     @Test
-    public void simpleFilterUsingXPathToSelectPrintsSelectedXmlToStandardOutput() {
+    public void simpleFilterUsingXPathToSelectPrintsSelectedXmlToStandardOutput() throws XMLStreamException {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag[text() = 'magician']"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(XmlStreamFilter.class)));
@@ -81,8 +81,7 @@ public class XmlStreamFilterCliFactoryTest {
     }
 
     @Test
-    @Ignore // Transformer currently reads too much when XML isn't indented.
-    public void simpleFilterUsingXPathToSelectPrintsSelectedXmlToStandardOutputWithIndentation() {
+    public void simpleFilterUsingXPathToSelectPrintsSelectedXmlToStandardOutputWithIndentation() throws XMLStreamException {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag[text() = 'magician']", "-i"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(XmlStreamFilter.class)));
@@ -106,7 +105,7 @@ public class XmlStreamFilterCliFactoryTest {
     }
 
     @Test
-    public void advancedFilterUsingXPathToBothSelectAndTransformAndUsingWhiteListFromFilePrintsSelectedXmlToStandardOutput() {
+    public void advancedFilterUsingXPathToBothSelectAndTransformAndUsingWhiteListFromFilePrintsSelectedXmlToStandardOutput() throws XMLStreamException {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag/text()", "-t", "//book/title/text()", "-f", Resources.getResource("white_list.txt").getFile()});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(XmlStreamFilter.class)));
