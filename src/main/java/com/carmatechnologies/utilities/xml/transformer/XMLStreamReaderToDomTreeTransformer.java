@@ -1,5 +1,6 @@
 package com.carmatechnologies.utilities.xml.transformer;
 
+import com.carmatechnologies.utilities.xml.common.TransformerFactoryImpl;
 import com.google.common.base.Function;
 import org.w3c.dom.Node;
 
@@ -7,7 +8,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stax.StAXSource;
 
@@ -21,7 +21,7 @@ public final class XMLStreamReaderToDomTreeTransformer implements Function<XMLSt
     }
 
     public XMLStreamReaderToDomTreeTransformer() throws TransformerConfigurationException {
-        this(TransformerFactory.newInstance().newTransformer());
+        this(TransformerFactoryImpl.newInstance().newTransformer());
     }
 
     public Node apply(final XMLStreamReader reader) {
