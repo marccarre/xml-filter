@@ -13,9 +13,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.TransformerConfigurationException;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static com.carmatechnologies.utilities.xml.common.InputStreams.autoGUnzip;
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -26,7 +30,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * - filter elements with a specific name, or validating the condition specified by the provided predicate, and
  * - transform filtered elements according to the provided transformer.
  */
-public final class XmlStreamFilter {
+public final class XmlStreamFilter implements StreamFilter {
+    public static final String VERSION = "1.0";
+
     private final String elementLocalName;
     private final Predicate<Node> filter;
     private final Function<Pair<Node, OutputStream>, Void> transformer;
@@ -47,9 +53,18 @@ public final class XmlStreamFilter {
         this.domTreeTransformer = checkNotNull(domTreeTransformer, "XMLStreamReader-to-DOM tree transformer must NOT be null.");
     }
 
-    public void filter(final InputStream in, final OutputStream out) throws XMLStreamException {
+    @Override
+    public void filter(final InputStream in, final OutputStream out) {
         checkNotNull(in, "InputStream must NOT be null.");
         checkNotNull(out, "OutputStream must NOT be null.");
+        try {
+            doFilter(in, out);
+        } catch (XMLStreamException e) {
+            throw new RuntimeException("Failed to filter the provided stream.", e);
+        }
+    }
+
+    private void doFilter(final InputStream in, final OutputStream out) throws XMLStreamException {
         final XMLStreamReader reader = xmlInputFactory.createXMLStreamReader(in, UTF_8.name());
         final MutablePair<Node, OutputStream> outputHolder = MutablePair.withSecond(out);
 
@@ -67,4 +82,8 @@ public final class XmlStreamFilter {
         return (reader.next() == XMLEvent.START_ELEMENT) && elementLocalName.equals(reader.getLocalName());
     }
 
+    public static void main(final String[] args) throws IOException {
+        final StreamFilter streamFilter = new XmlStreamFilterCliFactory().newStreamFilter(args);
+        streamFilter.filter(new BufferedInputStream(autoGUnzip(System.in)), new BufferedOutputStream(System.out));
+    }
 }
