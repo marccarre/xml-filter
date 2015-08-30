@@ -1,8 +1,16 @@
 language: java
 jdk:
-  - openjdk6
-  - openjdk7
-  - oraclejdk7
-  - oraclejdk8
+- openjdk6
+- openjdk7
+- oraclejdk7
+- oraclejdk8
 after_success:
-  - mvn clean test jacoco:report coveralls:report
+- mvn clean test jacoco:report coveralls:report
+deploy:
+  provider: releases
+  api_key:
+    secure: kzAcFDfZwJXU/inuz/gGONlgiq9WqOdN51mC/HdprTGgUOxK5wwjf5l9sD94grwjeRjqB8UpypjkbMWIqPzVA8hQuyZV6H3seltHayAjEvdhvgsPGwzsvsLwmr+vO4WsmwQUW0FX54/IFRIlexXw5AqR1L1pHDkKucsKfs9JgwdhZgoWGQUjyW8J1+BHS2p4O6z5zw0c5TfsKcWtSj077mnE6fgUwT/mvTS40zZ/IeoYuGD0k9HdFs/4rLifJXE7ZZURqXEnK2fn88gjSAbWKTONtFwmDfDB9ZYCRGJ2mc6Q+UNTw8deohfk6Ta09qqiBloecQTIQuNcV1LI2FdCbLO8fL3DhCri5umiKemXE/DximWE0G/9Mg96ccoAgbfCMoGxjXpIDQhmMzT081E4jPsksy/e5StVdPq0zcSdQW+g+QsEeabl5qtOmcugQIEMcaa8ocoJKL/FpI/6QScwSW5Oum+wJNcGNR5PmeiQromwETwKuRds7JeCul5efa2qY1CxKKZvFqBDXO5kpFFLIqDcz0cTm1pTBMTO9CqGjOxzFjc/zamMQ/ukHQwhRWqIGjzxnmBjiz2lrCacdAgh5s4UtgGeLCXRIFL1SBoYNb9UIm4L7jLZlLX3WZ94AKM9n6Rt+vOJowMqWK5KdfHZWP/WTOkQHZVR99sl3aiP3qc=
+  file: target/xml-stream-filter-1.0-jar-with-dependencies.jar
+  skip_cleanup: true
+  on:
+    tags: true
