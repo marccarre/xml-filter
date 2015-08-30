@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/marccarre/xml-stream-filter.png?branch=master)](https://travis-ci.org/marccarre/xml-stream-filter) [![Coverage Status](https://coveralls.io/repos/marccarre/xml-stream-filter/badge.png)](https://coveralls.io/r/marccarre/xml-stream-filter)
-
+[![Build Status](https://travis-ci.org/marccarre/xml-stream-filter.png?branch=master)](https://travis-ci.org/marccarre/xml-stream-filter) [![Coverage Status](https://coveralls.io/repos/marccarre/xml-stream-filter/badge.svg?branch=master&service=github)](https://coveralls.io/github/marccarre/xml-stream-filter?branch=master)
 xml-stream-filter - a Java and command line utility to:
 
   - stream-process **large XML** and **GZipped XML** files, and
