@@ -71,7 +71,7 @@ public class XmlStreamFilterCliFactory {
 
         options.addOption("f", FILE, true, "[Optional] Define white-list of patterns from file, one per line. " +
                 "XML elements will be selected if the value returned by the provided XPath query is in the white-list. " +
-                "Example: if file contains \"magician\\\\nxquery\\\\n\" and filter is: \"//book/tags/tag/text()\", " +
+                "Example: if file contains \"magician\\nxquery\\n\" and filter is: \"//book/tags/tag/text()\", " +
                 "then \"book\" elements with either a \"magician\" or \"xquery\" tag will be returned.");
 
         options.addOption("h", HELP, false, "Print this, i.e. a usage message briefly summarizing the command-line options, then exit.");
@@ -83,6 +83,15 @@ public class XmlStreamFilterCliFactory {
     }
 
     public StreamFilter newStreamFilter(final String[] args) {
+        try {
+            return createStreamFilter(args);
+        } finally {
+            stdOutWriter.flush();
+            stdErrWriter.flush();
+        }
+    }
+
+    private StreamFilter createStreamFilter(final String[] args) {
         final CommandLine line = parseArguments(args);
         if (line == null) {
             return new NoOpStreamFilter();
@@ -191,7 +200,7 @@ public class XmlStreamFilterCliFactory {
     }
 
     private void printHelp(final PrintWriter writer) {
-        new HelpFormatter().printHelp(writer, DEFAULT_WIDTH, "java " + XmlStreamFilter.class.getCanonicalName(), null, options, DEFAULT_LEFT_PAD, DEFAULT_DESC_PAD, null, true);
+        new HelpFormatter().printHelp(writer, DEFAULT_WIDTH, "java -jar " + XmlStreamFilter.class.getCanonicalName(), null, options, DEFAULT_LEFT_PAD, DEFAULT_DESC_PAD, null, true);
     }
 
     private void printVersion() {

@@ -22,8 +22,8 @@ public class XmlStreamFilterCliFactoryTest {
 
     private static final String NEW_LINE = System.getProperty("line.separator");
 
-    private static final String USAGE = "usage: java com.carmatechnologies.utilities.xml.XmlStreamFilter [-e <arg>]" + NEW_LINE +
-            "       [-f <arg>] [-h] [-i] [-s <arg>] [-t <arg>] [-v]" + NEW_LINE +
+    private static final String USAGE = "usage: java -jar com.carmatechnologies.utilities.xml.XmlStreamFilter [-e" + NEW_LINE +
+            "       <arg>] [-f <arg>] [-h] [-i] [-s <arg>] [-t <arg>] [-v]" + NEW_LINE +
             " -e,--element <arg>     Local name of the XML element to detect in the" + NEW_LINE +
             "                        input XML stream and, potentially, select." + NEW_LINE +
             "                        Example: \"book\"." + NEW_LINE +
@@ -31,7 +31,7 @@ public class XmlStreamFilterCliFactoryTest {
             "                        file, one per line. XML elements will be selected" + NEW_LINE +
             "                        if the value returned by the provided XPath query" + NEW_LINE +
             "                        is in the white-list. Example: if file contains" + NEW_LINE +
-            "                        \"magician\\\\nxquery\\\\n\" and filter is:" + NEW_LINE +
+            "                        \"magician\\nxquery\\n\" and filter is:" + NEW_LINE +
             "                        \"//book/tags/tag/text()\", then \"book\" elements" + NEW_LINE +
             "                        with either a \"magician\" or \"xquery\" tag will be" + NEW_LINE +
             "                        returned." + NEW_LINE +
@@ -182,7 +182,6 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-h"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is(USAGE));
         assertThat(stdErr.toString(), is(""));
     }
@@ -192,7 +191,6 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{"--help"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is(USAGE));
         assertThat(stdErr.toString(), is(""));
     }
@@ -202,7 +200,6 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-v"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is("1.0" + NEW_LINE));
         assertThat(stdErr.toString(), is(""));
     }
@@ -212,7 +209,6 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{"--version"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is("1.0" + NEW_LINE));
         assertThat(stdErr.toString(), is(""));
     }
@@ -222,7 +218,6 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Invalid command line arguments: please provide a value for argument \"element\"." + NEW_LINE + USAGE));
     }
@@ -232,7 +227,6 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Missing argument for option: e" + NEW_LINE + USAGE));
     }
@@ -242,7 +236,6 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Invalid command line arguments: please provide a value for argument \"select\"." + NEW_LINE + USAGE));
     }
@@ -252,7 +245,6 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "~~~clearly not XPath~~"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"select\"." + XPATH_EXCEPTION_MESSAGE + NEW_LINE + USAGE));
     }
@@ -262,7 +254,6 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "~~~clearly not XPath~~", "-f", Resources.getResource("white_list.txt").getFile()});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"select\"." + XPATH_EXCEPTION_MESSAGE + NEW_LINE + USAGE));
     }
@@ -272,7 +263,6 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag[text() = 'magician']", "-t", "~~~clearly not XPath~~"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"transform\"." + XPATH_EXCEPTION_MESSAGE + NEW_LINE + USAGE));
     }
@@ -282,14 +272,8 @@ public class XmlStreamFilterCliFactoryTest {
         StreamFilter filter = factory.newStreamFilter(new String[]{"-e", "book", "-s", "//book/tags/tag/text()", "-f", "~/non_existant_white_list.txt"});
         assertThat(filter, is(not(nullValue())));
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
-        flush();
         assertThat(stdOut.toString(), is(""));
         assertThat(stdErr.toString(), is("Invalid command line arguments: Failed to read white-list of patterns from file: ~/non_existant_white_list.txt. Original error: \n" +
                 "~/non_existant_white_list.txt (No such file or directory)" + NEW_LINE + USAGE));
-    }
-
-    private void flush() {
-        stdOutWriter.flush();
-        stdErrWriter.flush();
     }
 }
