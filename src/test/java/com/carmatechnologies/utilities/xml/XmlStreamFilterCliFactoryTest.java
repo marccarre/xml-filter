@@ -1,6 +1,7 @@
 package com.carmatechnologies.utilities.xml;
 
 import com.google.common.io.Resources;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.xml.stream.XMLStreamException;
@@ -52,6 +53,18 @@ public class XmlStreamFilterCliFactoryTest {
             "                        com.carmatechnologies.utilities.xml.XmlStreamFilte" + NEW_LINE +
             "                        r to the standard output stream. This version" + NEW_LINE +
             "                        number should be included in all bug reports." + NEW_LINE;
+
+    private static String XPATH_EXCEPTION_MESSAGE;
+
+    @BeforeClass
+    public static void setUp() {
+        final String javaVersion = System.getProperty("java.version");
+        final String javaVmName = System.getProperty("java.vm.name");
+        final boolean isNullXPathExceptionMessage = javaVersion.startsWith("1.6") && javaVmName.contains("OpenJDK");
+        XPATH_EXCEPTION_MESSAGE = isNullXPathExceptionMessage
+                ? ""
+                : " Original error: \njavax.xml.transform.TransformerException: A location path was expected, but the following token was encountered:  ~~~clearly";
+    }
 
     private final OutputStream stdOut = new ByteArrayOutputStream();
     private final OutputStream stdErr = new ByteArrayOutputStream();
@@ -241,8 +254,7 @@ public class XmlStreamFilterCliFactoryTest {
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
         flush();
         assertThat(stdOut.toString(), is(""));
-        assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"select\". Original error: \n" +
-                "javax.xml.transform.TransformerException: A location path was expected, but the following token was encountered:  ~~~clearly" + NEW_LINE + USAGE));
+        assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"select\"." + XPATH_EXCEPTION_MESSAGE + NEW_LINE + USAGE));
     }
 
     @Test
@@ -252,8 +264,7 @@ public class XmlStreamFilterCliFactoryTest {
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
         flush();
         assertThat(stdOut.toString(), is(""));
-        assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"select\". Original error: \n" +
-                "javax.xml.transform.TransformerException: A location path was expected, but the following token was encountered:  ~~~clearly" + NEW_LINE + USAGE));
+        assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"select\"." + XPATH_EXCEPTION_MESSAGE + NEW_LINE + USAGE));
     }
 
     @Test
@@ -263,8 +274,7 @@ public class XmlStreamFilterCliFactoryTest {
         assertThat(filter, is(instanceOf(NoOpStreamFilter.class)));
         flush();
         assertThat(stdOut.toString(), is(""));
-        assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"transform\". Original error: \n" +
-                "javax.xml.transform.TransformerException: A location path was expected, but the following token was encountered:  ~~~clearly" + NEW_LINE + USAGE));
+        assertThat(stdErr.toString(), is("Invalid command line arguments: Invalid XPath expression \"~~~clearly not XPath~~\" for argument \"transform\"." + XPATH_EXCEPTION_MESSAGE + NEW_LINE + USAGE));
     }
 
     @Test

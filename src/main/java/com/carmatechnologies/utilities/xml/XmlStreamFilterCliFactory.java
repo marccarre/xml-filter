@@ -39,6 +39,7 @@ public class XmlStreamFilterCliFactory {
     private static final String FILE = "file";
     private static final String HELP = "help";
     private static final String VERSION = "version";
+    private static final String EMPTY_STRING = "";
 
     private final PrintWriter stdOutWriter;
     private final PrintWriter stdErrWriter;
@@ -210,6 +211,12 @@ public class XmlStreamFilterCliFactory {
     }
 
     private String originalError(final Exception e) {
-        return " Original error: \n" + e.getMessage();
+        if (e == null) {
+            return EMPTY_STRING;
+        }
+        final String message = e.getMessage();
+        return ((message == null) || message.isEmpty())
+                ? EMPTY_STRING
+                : " Original error: \n" + e.getMessage();
     }
 }
