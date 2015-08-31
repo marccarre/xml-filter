@@ -25,18 +25,18 @@ public final class InputStreams {
                 : new BufferedInputStream(in);
     }
 
+
     /**
      * Check if the provided instance of {@code InputStream} is GZipped, and:
      * - if so, transparently decorates it with {@code GZIPInputStream},
      * - if not, returns the stream as is.
      * As a result, the returned {@code InputStream} is guaranteed to be GUnzipped.
-     * <p/>
      * WARNING: even if the stream is not GZipped, if it does not support "marking/resetting",
      * it will end up decorated with {@code BufferedInputStream}.
      *
      * @param in {@code InputStream} to automatically GUnzip.
      * @return the GUnzipped stream corresponding to the provided stream.
-     * @throws IOException
+     * @throws IOException if an I/O error has occurred, on reading stream, on resetting stream, or on wrapping with GZIPInputStream.
      */
     public static InputStream autoGUnzip(InputStream in) throws IOException {
         // We need to read the first two bytes of the stream to know if it is GZipped or not.

@@ -31,9 +31,11 @@ public final class MutablePair<First, Second> implements Pair<First, Second> {
 
     /**
      * Partially initializes the pair with the provided {@code first} element.
-     * The {@code second} element will remain {@code null}, until modified using {@link MutablePair#second(Second) second}
+     * The {@code second} element will remain {@code null}, until modified using <code>{@link MutablePair#second(Object) second}</code>.
      *
-     * @param first value used to initialize {@code first}
+     * @param first    value used to initialize {@code first}.
+     * @param <First>  Type of {@code first}.
+     * @param <Second> Type of {@code second}.
      * @return partially initialized pair.
      */
     public static <First, Second> MutablePair<First, Second> withFirst(final First first) {
@@ -42,9 +44,11 @@ public final class MutablePair<First, Second> implements Pair<First, Second> {
 
     /**
      * Partially initializes the pair with the provided {@code second} element.
-     * The {@code first} element will remain {@code null}, until modified using {@link MutablePair#first(First) first}
+     * The {@code first} element will remain {@code null}, until modified using <code>{@link MutablePair#first(Object) first}</code>.
      *
-     * @param second value used to initialize {@code second}
+     * @param second   value used to initialize {@code second}.
+     * @param <First>  Type of {@code first}.
+     * @param <Second> Type of {@code second}.
      * @return partially initialized pair.
      */
     public static <First, Second> MutablePair<First, Second> withSecond(final Second second) {
