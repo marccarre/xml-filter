@@ -26,7 +26,7 @@ The "*thin*" jar is available in Maven Central:
         <version>1.0</version>
     </dependency>
 
-You can also download the "*fat*" jar [here](https://github.com/marccarre/xml-stream-filter/archive/v1.0.zip).
+You can also download the "*fat*" jar on [this page](https://github.com/marccarre/xml-stream-filter/releases/tag/v1.0).
 
 
 Command Line Interface
