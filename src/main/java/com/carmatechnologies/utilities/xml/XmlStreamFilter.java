@@ -6,8 +6,6 @@ import com.carmatechnologies.utilities.xml.common.OutputStreams;
 import com.carmatechnologies.utilities.xml.common.Pair;
 import com.carmatechnologies.utilities.xml.common.XMLInputFactoryImpl;
 import com.carmatechnologies.utilities.xml.transformer.XMLStreamReaderToDomTreeTransformer;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.io.Closeables;
 import org.w3c.dom.Node;
 
@@ -19,6 +17,8 @@ import javax.xml.transform.TransformerConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.carmatechnologies.utilities.xml.common.InputStreams.autoGUnzip;
 import static com.google.common.base.Charsets.UTF_8;
@@ -70,7 +70,7 @@ public final class XmlStreamFilter implements StreamFilter {
             reader.next();
             while (isStartOfTargetElement(reader)) {
                 final Node domTree = domTreeTransformer.apply(reader);
-                if (filter.apply(domTree)) {
+                if (filter.test(domTree)) {
                     transformer.apply(outputHolder.first(domTree));
                 }
             }

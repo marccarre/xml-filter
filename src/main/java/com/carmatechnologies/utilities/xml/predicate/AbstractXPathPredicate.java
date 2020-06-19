@@ -1,6 +1,6 @@
 package com.carmatechnologies.utilities.xml.predicate;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -28,7 +28,7 @@ public abstract class AbstractXPathPredicate implements Predicate<Node> {
     }
 
     @Override
-    public boolean apply(final Node domTree) {
+    public boolean test(final Node domTree) {
         checkNotNull(domTree, "Node must NOT be null.");
         try {
             final NodeList matchedNodes = (NodeList) xpathExpression.evaluate(domTree, XPathConstants.NODESET);

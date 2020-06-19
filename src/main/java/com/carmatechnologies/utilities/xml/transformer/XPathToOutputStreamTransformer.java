@@ -1,7 +1,6 @@
 package com.carmatechnologies.utilities.xml.transformer;
 
 import com.carmatechnologies.utilities.xml.common.Pair;
-import com.google.common.base.Function;
 import org.w3c.dom.Node;
 
 import javax.xml.xpath.XPathExpression;
@@ -9,6 +8,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.function.Function;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.base.Preconditions.checkNotNull;

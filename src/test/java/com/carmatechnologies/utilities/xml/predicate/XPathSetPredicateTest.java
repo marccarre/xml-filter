@@ -25,22 +25,22 @@ public class XPathSetPredicateTest {
     @Test
     public void xpathSetPredicateShouldReturnTrueWhenXPathQueryFindsElementsFromSet() throws XPathExpressionException {
         Set<String> whiteList = Sets.newHashSet("magician", "xml");
-        assertThat(new XPathSetPredicate("//book/tags/tag/text()", whiteList).apply(domTree), is(true));
-        assertThat(new XPathSetPredicate("//book/descendant::*/text()", whiteList).apply(domTree), is(true));
+        assertThat(new XPathSetPredicate("//book/tags/tag/text()", whiteList).test(domTree), is(true));
+        assertThat(new XPathSetPredicate("//book/descendant::*/text()", whiteList).test(domTree), is(true));
     }
 
     @Test
     public void xpathSetPredicateShouldReturnFalseWhenXPathQueryFindsElementsButTheseAreNotInSet() throws XPathExpressionException {
         Set<String> badWhiteList = Sets.newHashSet("non-existant", "not here!");
-        assertThat(new XPathSetPredicate("//book/tags/tag/text()", badWhiteList).apply(domTree), is(false));
-        assertThat(new XPathSetPredicate("//book/descendant::*/text()", badWhiteList).apply(domTree), is(false));
+        assertThat(new XPathSetPredicate("//book/tags/tag/text()", badWhiteList).test(domTree), is(false));
+        assertThat(new XPathSetPredicate("//book/descendant::*/text()", badWhiteList).test(domTree), is(false));
     }
 
     @Test
     public void xpathSetPredicateShouldReturnFalseWhenXPathQueryDoesNotFindAnyElement() throws XPathExpressionException {
         Set<String> whiteList = Sets.newHashSet("magician", "xml");
-        assertThat(new XPathSetPredicate("//non-existant/text()", whiteList).apply(domTree), is(false));
-        assertThat(new XPathSetPredicate("//non-existant/descendant::*/text()", whiteList).apply(domTree), is(false));
+        assertThat(new XPathSetPredicate("//non-existant/text()", whiteList).test(domTree), is(false));
+        assertThat(new XPathSetPredicate("//non-existant/descendant::*/text()", whiteList).test(domTree), is(false));
     }
 
     @Test
@@ -48,16 +48,16 @@ public class XPathSetPredicateTest {
         Set<String> whiteList = Sets.newHashSet("magician", "xml");
         final XPathSetPredicate predicate = new XPathSetPredicate("//book/tags/tag/text()", whiteList);
 
-        assertThat(predicate.apply(domTree), is(true));
-        assertThat(predicate.apply(domTree), is(true)); // Evaluate another time...
-        assertThat(predicate.apply(domTree), is(true)); // Evaluate yet another time...
+        assertThat(predicate.test(domTree), is(true));
+        assertThat(predicate.test(domTree), is(true)); // Evaluate another time...
+        assertThat(predicate.test(domTree), is(true)); // Evaluate yet another time...
     }
 
     @Test
     public void xpathSetPredicateShouldSanitizeInputAndReturnTrueWhenXPathQueryFindsElementsFromSet() throws XPathExpressionException {
         Set<String> whiteList = Sets.newHashSet("  magician  ", "     xml    ", null, "", "   ");
-        assertThat(new XPathSetPredicate("//book/tags/tag/text()", whiteList).apply(domTree), is(true));
-        assertThat(new XPathSetPredicate("//book/descendant::*/text()", whiteList).apply(domTree), is(true));
+        assertThat(new XPathSetPredicate("//book/tags/tag/text()", whiteList).test(domTree), is(true));
+        assertThat(new XPathSetPredicate("//book/descendant::*/text()", whiteList).test(domTree), is(true));
     }
 
     @Test

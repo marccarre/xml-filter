@@ -5,8 +5,6 @@ import com.carmatechnologies.utilities.xml.predicate.XPathPredicate;
 import com.carmatechnologies.utilities.xml.predicate.XPathSetPredicate;
 import com.carmatechnologies.utilities.xml.transformer.DomTreeToOutputStreamTransformer;
 import com.carmatechnologies.utilities.xml.transformer.XPathToOutputStreamTransformer;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,6 +18,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.carmatechnologies.utilities.xml.TestingUtilities.streamFor;
 import static org.hamcrest.CoreMatchers.equalTo;

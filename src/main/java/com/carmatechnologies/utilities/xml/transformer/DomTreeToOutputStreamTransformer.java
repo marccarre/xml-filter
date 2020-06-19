@@ -2,7 +2,6 @@ package com.carmatechnologies.utilities.xml.transformer;
 
 import com.carmatechnologies.utilities.xml.common.Pair;
 import com.carmatechnologies.utilities.xml.common.TransformerFactoryImpl;
-import com.google.common.base.Function;
 import org.w3c.dom.Node;
 
 import javax.xml.transform.Transformer;
@@ -11,6 +10,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.OutputStream;
+import java.util.function.Function;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

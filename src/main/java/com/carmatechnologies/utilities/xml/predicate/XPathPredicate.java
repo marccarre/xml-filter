@@ -1,6 +1,6 @@
 package com.carmatechnologies.utilities.xml.predicate;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 

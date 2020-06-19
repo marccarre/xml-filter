@@ -1,12 +1,12 @@
 package com.carmatechnologies.utilities.xml.predicate;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
+import java.util.function.Predicate;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;

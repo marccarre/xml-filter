@@ -6,8 +6,6 @@ import com.carmatechnologies.utilities.xml.predicate.XPathPredicate;
 import com.carmatechnologies.utilities.xml.predicate.XPathSetPredicate;
 import com.carmatechnologies.utilities.xml.transformer.DomTreeToOutputStreamTransformer;
 import com.carmatechnologies.utilities.xml.transformer.XPathToOutputStreamTransformer;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import org.apache.commons.cli.CommandLine;
@@ -25,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static org.apache.commons.cli.HelpFormatter.DEFAULT_DESC_PAD;

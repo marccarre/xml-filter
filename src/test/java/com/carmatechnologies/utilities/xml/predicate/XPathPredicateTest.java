@@ -16,23 +16,23 @@ public class XPathPredicateTest {
 
     @Test
     public void xpathPredicateShouldReturnTrueWhenXPathQueryFindsElements() throws XPathExpressionException {
-        assertThat(new XPathPredicate("//book/tags/tag[text() = 'magician']").apply(domTree), is(true));
-        assertThat(new XPathPredicate("//book/descendant::*[text() = 'magician']").apply(domTree), is(true));
+        assertThat(new XPathPredicate("//book/tags/tag[text() = 'magician']").test(domTree), is(true));
+        assertThat(new XPathPredicate("//book/descendant::*[text() = 'magician']").test(domTree), is(true));
     }
 
     @Test
     public void xpathPredicateShouldReturnFalseWhenXPathQueryDoesNotFindAnyElement() throws XPathExpressionException {
-        assertThat(new XPathPredicate("//book/tags/tag[text() = 'non-existant']").apply(domTree), is(false));
-        assertThat(new XPathPredicate("//book/descendant::*[text() = 'non-existant']").apply(domTree), is(false));
+        assertThat(new XPathPredicate("//book/tags/tag[text() = 'non-existant']").test(domTree), is(false));
+        assertThat(new XPathPredicate("//book/descendant::*[text() = 'non-existant']").test(domTree), is(false));
     }
 
     @Test
     public void xpathPredicateShouldBeReusable() throws XPathExpressionException {
         XPathPredicate predicate = new XPathPredicate("//book/tags/tag[text() = 'magician']");
 
-        assertThat(predicate.apply(domTree), is(true));
-        assertThat(predicate.apply(domTree), is(true)); // Evaluate another time...
-        assertThat(predicate.apply(domTree), is(true)); // Evaluate yet another time...
+        assertThat(predicate.test(domTree), is(true));
+        assertThat(predicate.test(domTree), is(true)); // Evaluate another time...
+        assertThat(predicate.test(domTree), is(true)); // Evaluate yet another time...
     }
 
 }
